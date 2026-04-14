@@ -3,12 +3,9 @@
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import type { RefObject } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-import { styles } from '@actual-app/components/styles';
-import { Text } from '@actual-app/components/text';
 import { theme } from '@actual-app/components/theme';
-import { View } from '@actual-app/components/view';
 import { send } from '@actual-app/core/platform/client/connection';
 import * as monthUtils from '@actual-app/core/shared/months';
 import { q } from '@actual-app/core/shared/query';
@@ -33,6 +30,7 @@ import type {
   TransactionFilterEntity,
 } from '@actual-app/core/types/models';
 
+import { FeatureErrorFallback } from '#components/FeatureErrorFallback';
 import type { TableHandleRef } from '#components/table';
 import { isValidBoundaryDrop } from '#hooks/useDragDrop';
 import type { DropPosition } from '#hooks/useDragDrop';
@@ -286,23 +284,6 @@ type TransactionListProps = Pick<
   ) => void;
   onRefetch: () => void;
 };
-
-function TransactionListErrorFallback() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-      }}
-    >
-      <Text style={{ ...styles.mediumText, color: theme.errorText }}>
-        <Trans>There was a problem loading transactions</Trans>
-      </Text>
-    </View>
-  );
-}
 
 export function TransactionList({
   tableRef,
@@ -743,7 +724,7 @@ export function TransactionList({
   );
 
   return (
-    <ErrorBoundary FallbackComponent={TransactionListErrorFallback}>
+    <ErrorBoundary FallbackComponent={FeatureErrorFallback}>
       <TransactionTable
         ref={tableRef}
         transactions={allTransactions}

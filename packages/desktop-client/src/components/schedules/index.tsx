@@ -3,8 +3,6 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Button } from '@actual-app/components/button';
-import { styles } from '@actual-app/components/styles';
-import { Text } from '@actual-app/components/text';
 import { theme } from '@actual-app/components/theme';
 import { View } from '@actual-app/components/view';
 import { send } from '@actual-app/core/platform/client/connection';
@@ -12,6 +10,7 @@ import { q } from '@actual-app/core/shared/query';
 import type { ScheduleEntity } from '@actual-app/core/types/models';
 
 import { Search } from '#components/common/Search';
+import { FeatureErrorFallback } from '#components/FeatureErrorFallback';
 import { Page } from '#components/Page';
 import { useSchedules } from '#hooks/useSchedules';
 import { pushModal } from '#modals/modalsSlice';
@@ -19,23 +18,6 @@ import { useDispatch } from '#redux';
 
 import { SchedulesTable } from './SchedulesTable';
 import type { ScheduleItemAction } from './SchedulesTable';
-
-function SchedulesErrorFallback() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-      }}
-    >
-      <Text style={{ ...styles.mediumText, color: theme.errorText }}>
-        <Trans>There was a problem loading schedules</Trans>
-      </Text>
-    </View>
-  );
-}
 
 export function Schedules() {
   const { t } = useTranslation();
@@ -105,7 +87,7 @@ export function Schedules() {
   } = useSchedules({ query: schedulesQuery });
 
   return (
-    <ErrorBoundary FallbackComponent={SchedulesErrorFallback}>
+    <ErrorBoundary FallbackComponent={FeatureErrorFallback}>
       <Page header={t('Schedules')}>
         <View
           style={{

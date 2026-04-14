@@ -5,7 +5,6 @@ import { Trans } from 'react-i18next';
 import { Navigate, useLocation, useParams } from 'react-router';
 
 import { styles } from '@actual-app/components/styles';
-import { Text } from '@actual-app/components/text';
 import { theme } from '@actual-app/components/theme';
 import { View } from '@actual-app/components/view';
 import { listen, send } from '@actual-app/core/platform/client/connection';
@@ -46,6 +45,7 @@ import {
   useUpdateAccountMutation,
 } from '#accounts';
 import { markAccountRead } from '#accounts/accountsSlice';
+import { FeatureErrorFallback } from '#components/FeatureErrorFallback';
 import type { SavedFilter } from '#components/filters/SavedFilterMenuButton';
 import { TransactionList } from '#components/transactions/TransactionList';
 import { validateAccountName } from '#components/util/accountValidation';
@@ -93,23 +93,6 @@ function isTransactionFilterEntity(
   filter: ConditionEntity,
 ): filter is TransactionFilterEntity {
   return 'id' in filter;
-}
-
-function AccountErrorFallback() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-      }}
-    >
-      <Text style={{ ...styles.mediumText, color: theme.errorText }}>
-        <Trans>There was a problem loading the account view</Trans>
-      </Text>
-    </View>
-  );
 }
 
 type AllTransactionsProps = {
@@ -2047,7 +2030,7 @@ export function Account() {
     createPayee.mutateAsync({ name });
 
   return (
-    <ErrorBoundary FallbackComponent={AccountErrorFallback}>
+    <ErrorBoundary FallbackComponent={FeatureErrorFallback}>
       <SchedulesProvider query={schedulesQuery}>
         <SplitsExpandedProvider
           initialMode={expandSplits ? 'collapse' : 'expand'}

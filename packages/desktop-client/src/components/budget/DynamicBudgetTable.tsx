@@ -3,37 +3,17 @@ import React, { useEffect } from 'react';
 import type { ComponentProps } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { Trans } from 'react-i18next';
 import { AutoSizer } from 'react-virtualized-auto-sizer';
 
-import { styles } from '@actual-app/components/styles';
-import { Text } from '@actual-app/components/text';
-import { theme } from '@actual-app/components/theme';
 import { View } from '@actual-app/components/view';
 import * as monthUtils from '@actual-app/core/shared/months';
 
+import { FeatureErrorFallback } from '#components/FeatureErrorFallback';
 import { useGlobalPref } from '#hooks/useGlobalPref';
 
 import { useBudgetMonthCount } from './BudgetMonthCountContext';
 import { BudgetPageHeader } from './BudgetPageHeader';
 import { BudgetTable } from './BudgetTable';
-
-function BudgetErrorFallback() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-      }}
-    >
-      <Text style={{ ...styles.mediumText, color: theme.errorText }}>
-        <Trans>There was a problem loading the budget</Trans>
-      </Text>
-    </View>
-  );
-}
 
 function getNumPossibleMonths(width: number, categoryWidth: number) {
   const estimatedTableWidth = width - categoryWidth;
@@ -153,7 +133,7 @@ const DynamicBudgetTable = ({
       }}
     >
       <View style={{ width: '100%', maxWidth }}>
-        <ErrorBoundary FallbackComponent={BudgetErrorFallback}>
+        <ErrorBoundary FallbackComponent={FeatureErrorFallback}>
           <BudgetPageHeader
             startMonth={prewarmStartMonth}
             numMonths={numMonths}

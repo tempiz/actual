@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import type { CSSProperties } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { useResponsive } from '@actual-app/components/hooks/useResponsive';
 import { SvgAdd } from '@actual-app/components/icons/v1';
 import { styles } from '@actual-app/components/styles';
-import { Text } from '@actual-app/components/text';
 import { theme } from '@actual-app/components/theme';
 import { View } from '@actual-app/components/view';
 import * as Platform from '@actual-app/core/shared/platform';
 import { css } from '@emotion/css';
 import { Resizable } from 're-resizable';
 
+import { FeatureErrorFallback } from '#components/FeatureErrorFallback';
 import { useGlobalPref } from '#hooks/useGlobalPref';
 import { useLocalPref } from '#hooks/useLocalPref';
 import { useResizeObserver } from '#hooks/useResizeObserver';
@@ -25,25 +25,6 @@ import { PrimaryButtons } from './PrimaryButtons';
 import { SecondaryButtons } from './SecondaryButtons';
 import { useSidebar } from './SidebarProvider';
 import { ToggleButton } from './ToggleButton';
-
-function SidebarErrorFallback() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.sidebarBackground,
-        color: theme.sidebarItemText,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20,
-      }}
-    >
-      <Text style={{ ...styles.mediumText, color: theme.errorText }}>
-        <Trans>There was a problem loading the sidebar</Trans>
-      </Text>
-    </View>
-  );
-}
 
 export function Sidebar() {
   const hasWindowButtons = !Platform.isBrowser && Platform.OS === 'mac';
@@ -88,7 +69,7 @@ export function Sidebar() {
   });
 
   return (
-    <ErrorBoundary FallbackComponent={SidebarErrorFallback}>
+    <ErrorBoundary FallbackComponent={FeatureErrorFallback}>
       <Resizable
         defaultSize={{
           width: sidebarWidth,
