@@ -19688,7 +19688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jwa@npm:^1.4.1":
+"jwa@npm:^1.4.2":
   version: 1.4.2
   resolution: "jwa@npm:1.4.2"
   dependencies:
@@ -19700,12 +19700,12 @@ __metadata:
   linkType: hard
 
 "jws@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "jws@npm:3.2.2"
+  version: 3.2.3
+  resolution: "jws@npm:3.2.3"
   dependencies:
-    jwa: "npm:^1.4.1"
+    jwa: "npm:^1.4.2"
     safe-buffer: "npm:^5.0.1"
-  checksum: 10/70b016974af8a76d25030c80a0097b24ed5b17a9cf10f43b163c11cb4eb248d5d04a3fe48c0d724d2884c32879d878ccad7be0663720f46b464f662f7ed778fe
+  checksum: 10/707387dd1cabcc3d9c2818f773cfaac7ede66e79ca11bbd159285a88cf5d8e8f355afcb8ee373e7bb0fcf9b7a2df015b22c50f27842f2c77453f04cd9f8f4009
   languageName: node
   linkType: hard
 
@@ -27556,20 +27556,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.4.3":
-  version: 7.5.1
-  resolution: "tar@npm:7.5.1"
-  dependencies:
-    "@isaacs/fs-minipass": "npm:^4.0.0"
-    chownr: "npm:^3.0.0"
-    minipass: "npm:^7.1.2"
-    minizlib: "npm:^3.1.0"
-    yallist: "npm:^5.0.0"
-  checksum: 10/4848cd2fa2fcaf0734cf54e14bc685056eb43a74d7cc7f954c3ac88fea88c85d95b1d7896619f91aab6f2234c5eec731c18aaa201a78fcf86985bdc824ed7a00
-  languageName: node
-  linkType: hard
-
-"tar@npm:^7.5.6, tar@npm:^7.5.7":
+"tar@npm:^7.4.3, tar@npm:^7.5.6, tar@npm:^7.5.7":
   version: 7.5.13
   resolution: "tar@npm:7.5.13"
   dependencies:
