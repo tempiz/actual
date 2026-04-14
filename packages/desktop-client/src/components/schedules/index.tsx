@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { Button } from '@actual-app/components/button';
+import { styles } from '@actual-app/components/styles';
+import { Text } from '@actual-app/components/text';
 import { theme } from '@actual-app/components/theme';
 import { View } from '@actual-app/components/view';
 import { send } from '@actual-app/core/platform/client/connection';
@@ -16,6 +19,23 @@ import { useDispatch } from '#redux';
 
 import { SchedulesTable } from './SchedulesTable';
 import type { ScheduleItemAction } from './SchedulesTable';
+
+function SchedulesErrorFallback() {
+  return (
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+      }}
+    >
+      <Text style={{ ...styles.mediumText, color: theme.errorText }}>
+        <Trans>There was a problem loading schedules</Trans>
+      </Text>
+    </View>
+  );
+}
 
 export function Schedules() {
   const { t } = useTranslation();
@@ -85,66 +105,68 @@ export function Schedules() {
   } = useSchedules({ query: schedulesQuery });
 
   return (
-    <Page header={t('Schedules')}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          padding: '0 0 15px',
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Search
-            placeholder={t('Filter schedules…')}
-            value={filter}
-            onChange={setFilter}
-          />
-        </View>
-      </View>
-
-      <SchedulesTable
-        isLoading={isSchedulesLoading}
-        schedules={schedules}
-        filter={filter}
-        statuses={statuses}
-        allowCompleted
-        onSelect={onEdit}
-        onAction={onAction}
-        style={{ backgroundColor: theme.tableBackground }}
-      />
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          margin: '20px 0',
-          flexShrink: 0,
-        }}
-      >
+    <ErrorBoundary FallbackComponent={SchedulesErrorFallback}>
+      <Page header={t('Schedules')}>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            gap: '1em',
+            padding: '0 0 15px',
           }}
         >
-          <Button onPress={onDiscover}>
-            <Trans>Find schedules</Trans>
-          </Button>
-          <Button onPress={onChangeUpcomingLength}>
-            <Trans>Change upcoming length</Trans>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Search
+              placeholder={t('Filter schedules…')}
+              value={filter}
+              onChange={setFilter}
+            />
+          </View>
+        </View>
+
+        <SchedulesTable
+          isLoading={isSchedulesLoading}
+          schedules={schedules}
+          filter={filter}
+          statuses={statuses}
+          allowCompleted
+          onSelect={onEdit}
+          onAction={onAction}
+          style={{ backgroundColor: theme.tableBackground }}
+        />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            margin: '20px 0',
+            flexShrink: 0,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '1em',
+            }}
+          >
+            <Button onPress={onDiscover}>
+              <Trans>Find schedules</Trans>
+            </Button>
+            <Button onPress={onChangeUpcomingLength}>
+              <Trans>Change upcoming length</Trans>
+            </Button>
+          </View>
+          <Button variant="primary" onPress={onAdd}>
+            <Trans>Add new schedule</Trans>
           </Button>
         </View>
-        <Button variant="primary" onPress={onAdd}>
-          <Trans>Add new schedule</Trans>
-        </Button>
-      </View>
-    </Page>
+      </Page>
+    </ErrorBoundary>
   );
 }
